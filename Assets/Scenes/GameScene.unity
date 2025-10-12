@@ -5306,7 +5306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1070284028}
   flip: 0
-  speed: 1
+  speed: 0.1
   jumpPower: 5
   isJumping: 0
   jumpCooldown: 3

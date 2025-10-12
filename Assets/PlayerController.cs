@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
+    private string currentState = "Idle";
+    private bool walking = false;
+
+
     float horizontalInput;
     float moveSpeed = 5f;
     bool isFacingLeft = false;
@@ -11,6 +16,7 @@ public class PlayerController : MonoBehaviour
     bool isJumping = false;
 
     Rigidbody2D rb;
+    private Animator animator;
 
 
     private float timeBtwAttack;
@@ -28,12 +34,15 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
         horizontalInput = Input.GetAxis("Horizontal");
+
+        walking = Mathf.Abs(horizontalInput) > 0f;
 
         FlipSprite();
 
@@ -65,6 +74,11 @@ public class PlayerController : MonoBehaviour
         {
             timeBtwAttack -= Time.deltaTime;
         }
+
+        var state = GetState();
+        if (state.Equals(currentState)) return;
+        currentState = state;
+        animator.CrossFade(currentState, 0f, 0);
     }
 
     private void FixedUpdate()
@@ -91,5 +105,11 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
+    }
+
+    private string GetState()
+    {
+        if (walking) return "PlayerWalkAnim";
+        return "PlayerIdleAnim";
     }
 }
