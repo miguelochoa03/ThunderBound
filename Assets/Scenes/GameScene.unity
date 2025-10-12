@@ -5476,7 +5476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcdd1af12b8e2fd43831e36d0b4acfd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startTimeBtwAttack: 0.3
+  startTimeBtwAttack: 0.6
   attackPos: {fileID: 498858585}
   whatIsEnemies:
     serializedVersion: 2

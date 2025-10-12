@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 
     private string currentState = "Idle";
     private bool walking = false;
+    private bool attacking = false;
 
 
     float horizontalInput;
@@ -41,9 +42,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         horizontalInput = Input.GetAxis("Horizontal");
-
         walking = Mathf.Abs(horizontalInput) > 0f;
-
         FlipSprite();
 
         if (Input.GetButtonDown("Jump") && !isJumping)
@@ -53,33 +52,73 @@ public class PlayerController : MonoBehaviour
         }
 
 
-
-        if (timeBtwAttack <= 0)
-        {
-            // then you can attack
-            if (Input.GetKey(KeyCode.E))
-            {
-                //camAnim.SetTrigger("shake");
-                //playerAnim.SetTrigger("attack");
-
-                Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
-                for (int i = 0; i < enemiesToDamage.Length; i++)
-                {
-                    enemiesToDamage[i].GetComponent<EnemyMovement>().TakeDamage(damage);
-                }
-            }
-
-            timeBtwAttack = startTimeBtwAttack;
-        } else
+        // handle attack cooldown
+        if (timeBtwAttack > 0)
         {
             timeBtwAttack -= Time.deltaTime;
         }
+        // handle attack input
+        if (timeBtwAttack <= 0 && Input.GetKey(KeyCode.E))
+        {
+            Attack();
+        }
+        // update animation state
 
+
+
+        //if (timeBtwAttack <= 0)
+        //{
+        //    // then you can attack
+        //    if (Input.GetKey(KeyCode.E))
+        //    {
+        //        //camAnim.SetTrigger("shake");
+        //        attacking = true;
+
+        //        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
+        //        for (int i = 0; i < enemiesToDamage.Length; i++)
+        //        {
+        //            enemiesToDamage[i].GetComponent<EnemyMovement>().TakeDamage(damage);
+        //        }
+        //    } 
+        //    //else
+        //    //{
+        //    //    attacking = false;
+        //    //}
+
+        //    timeBtwAttack = startTimeBtwAttack;
+
+        //} else
+        //{
+        //    timeBtwAttack -= Time.deltaTime;
+        //    attacking = false;
+        //}
+
+        // update animation state
         var state = GetState();
         if (state.Equals(currentState)) return;
         currentState = state;
         animator.CrossFade(currentState, 0f, 0);
     }
+
+    void Attack()
+    {
+        attacking = true;
+        timeBtwAttack = startTimeBtwAttack;
+
+        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
+        for (int i = 0; i < enemiesToDamage.Length; i++)
+        {
+            enemiesToDamage[i].GetComponent<EnemyMovement>().TakeDamage(damage);
+        }
+        // 
+        StartCoroutine(ResetAttack());
+    }
+    IEnumerator ResetAttack()
+    {
+        yield return new WaitForSeconds(0.25f);
+        attacking = false;
+    }
+
 
     private void FixedUpdate()
     {
@@ -109,6 +148,7 @@ public class PlayerController : MonoBehaviour
 
     private string GetState()
     {
+        if (attacking) return "PlayerAttackAnim";
         if (walking) return "PlayerWalkAnim";
         return "PlayerIdleAnim";
     }

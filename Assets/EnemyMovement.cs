@@ -40,7 +40,7 @@ public class EnemyMovement : MonoBehaviour
         // handles dazing the enemy
         if (dazedTime <= 0)
         {
-            speed = 5;
+            speed = 0.4f;
         } else
         {
             speed = 0;
