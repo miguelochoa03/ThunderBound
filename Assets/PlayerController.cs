@@ -31,6 +31,9 @@ public class PlayerController : MonoBehaviour
     public int damage;
 
     // wamt to add cam shake and knockback to enemies
+    // need to stop movement when attacking
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +62,10 @@ public class PlayerController : MonoBehaviour
         // handle attack input
         if (timeBtwAttack <= 0 && Input.GetKey(KeyCode.E))
         {
-            //Attack();
+            Attack();
+        }
+        if (timeBtwAttack <= 0 && Input.GetKey(KeyCode.R))
+        {
             Crush();
         }
         // update animation state
@@ -83,7 +89,7 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator ResetAttack()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.5f);
         attacking = false;
     }
     // logic for different attack and its anim
