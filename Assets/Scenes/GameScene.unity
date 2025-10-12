@@ -5306,10 +5306,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1070284028}
   flip: 0
-  speed: 2
+  speed: 1
   jumpPower: 5
   isJumping: 0
-  jumpCooldown: 2
+  jumpCooldown: 3
   health: 20
   bloodEffect: {fileID: 832399724}
   startDazedTime: 0.6
@@ -5324,9 +5324,9 @@ GameObject:
   - component: {fileID: 1070284032}
   - component: {fileID: 1070284031}
   - component: {fileID: 1070284029}
-  - component: {fileID: 1070284033}
   - component: {fileID: 1070284034}
   - component: {fileID: 1070284035}
+  - component: {fileID: 1070284036}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5429,18 +5429,6 @@ Transform:
   - {fileID: 498858585}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1070284033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1070284028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cb254dd3568d2e458d7db021ecd62ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!70 &1070284034
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -5495,8 +5483,27 @@ MonoBehaviour:
     m_Bits: 64
   attackRange: 0.63
   damage: 4
-  camAnim: {fileID: 0}
-  playerAnim: {fileID: 0}
+--- !u!95 &1070284036
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070284028}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e6bd3efe4c3e756469ec048dee3b80ba, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2112957225
 GameObject:
   m_ObjectHideFlags: 0

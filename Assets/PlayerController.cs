@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     float horizontalInput;
     float moveSpeed = 5f;
@@ -12,6 +11,18 @@ public class PlayerMovement : MonoBehaviour
     bool isJumping = false;
 
     Rigidbody2D rb;
+
+
+    private float timeBtwAttack;
+    public float startTimeBtwAttack;
+
+    public Transform attackPos;
+    public LayerMask whatIsEnemies;
+    public float attackRange;
+    public int damage;
+
+    //public Animator camAnim;
+    //public Animator playerAnim;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +41,29 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             isJumping = true;
+        }
+
+
+
+        if (timeBtwAttack <= 0)
+        {
+            // then you can attack
+            if (Input.GetKey(KeyCode.E))
+            {
+                //camAnim.SetTrigger("shake");
+                //playerAnim.SetTrigger("attack");
+
+                Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
+                for (int i = 0; i < enemiesToDamage.Length; i++)
+                {
+                    enemiesToDamage[i].GetComponent<EnemyMovement>().TakeDamage(damage);
+                }
+            }
+
+            timeBtwAttack = startTimeBtwAttack;
+        } else
+        {
+            timeBtwAttack -= Time.deltaTime;
         }
     }
 
@@ -51,5 +85,11 @@ public class PlayerMovement : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         isJumping = false;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
 }
