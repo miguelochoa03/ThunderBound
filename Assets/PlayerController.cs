@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
     float horizontalInput;
     float moveSpeed = 5f;
+    float origMoveSpeed = 5f;
     bool isFacingLeft = false;
     float jumpPower = 4f;
     bool isJumping = false;
@@ -21,17 +23,23 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb;
     private Animator animator;
 
+    public GameObject bloodEffect;
+    public float health = 100f;
+
 
     private float timeBtwAttack;
     public float startTimeBtwAttack;
 
     public Transform attackPos;
+    public Transform crushPos;
     public LayerMask whatIsEnemies;
     public float attackRange;
+    public float crushRange;
     public int damage;
 
     // wamt to add cam shake and knockback to enemies
     // need to stop movement when attacking
+    // camera follows player
 
 
 
@@ -81,15 +89,27 @@ public class PlayerController : MonoBehaviour
         timeBtwAttack = startTimeBtwAttack;
 
         Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
+        //for (int i = 0; i < enemiesToDamage.Length; i++)
+        //{
+        //    enemiesToDamage[i].GetComponent<EnemyMovement>().TakeDamage(damage);
+        //}
+        StartCoroutine(DelayAttackDamage(enemiesToDamage));
+        StartCoroutine(ResetAttack());
+    }
+    IEnumerator DelayAttackDamage(Collider2D[] enemiesToDamage)
+    {
+        yield return new WaitForSeconds(0.4f);
+
         for (int i = 0; i < enemiesToDamage.Length; i++)
         {
             enemiesToDamage[i].GetComponent<EnemyMovement>().TakeDamage(damage);
         }
-        StartCoroutine(ResetAttack());
     }
     IEnumerator ResetAttack()
     {
+        moveSpeed = 0;
         yield return new WaitForSeconds(0.5f);
+        moveSpeed = origMoveSpeed;
         attacking = false;
     }
     // logic for different attack and its anim
@@ -98,16 +118,24 @@ public class PlayerController : MonoBehaviour
         crushing = true;
         timeBtwAttack = startTimeBtwAttack;
 
-        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
+        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(crushPos.position, crushRange, whatIsEnemies);
+        StartCoroutine(DelayCrushDamage(enemiesToDamage));
+        StartCoroutine(ResetCrush());
+    }
+    IEnumerator DelayCrushDamage(Collider2D[] enemiesToDamage)
+    {
+        yield return new WaitForSeconds(0.4f);
+
         for (int i = 0; i < enemiesToDamage.Length; i++)
         {
             enemiesToDamage[i].GetComponent<EnemyMovement>().TakeDamage(damage);
         }
-        StartCoroutine(ResetCrush());
     }
     IEnumerator ResetCrush()
     {
-        yield return new WaitForSeconds(0.4f);
+        moveSpeed = 0;
+        yield return new WaitForSeconds(0.6f);
+        moveSpeed = origMoveSpeed;
         crushing = false;
     }
 
@@ -137,6 +165,7 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
+        Gizmos.DrawWireSphere(crushPos.position, crushRange);
     }
 
 
@@ -147,5 +176,26 @@ public class PlayerController : MonoBehaviour
         if (attacking) return "PlayerAttackAnim";
         if (walking) return "PlayerWalkAnim";
         return "PlayerIdleAnim";
+    }
+    //public void ApplyKnockback(Vector2 force)
+    //{
+    //    Rigidbody2D rb = GetComponent<Rigidbody2D>();
+    //    if (rb != null)
+    //    {
+    //        rb.AddForce(force, ForceMode2D.Impulse);
+    //    }
+    //}
+
+    // player takes damage
+    public void TakeDamage(int damage)
+    {
+        // want to add knockback
+
+        // play a hurt sound
+
+        // blood
+        Instantiate(bloodEffect, transform.position, Quaternion.identity);
+        health -= damage;
+        Debug.Log("Player Damage TAKEN !");
     }
 }

@@ -22,6 +22,16 @@ public class EnemyMovement : MonoBehaviour
     private float dazedTime;
     public float startDazedTime;
 
+    private float timeBtwAttackEnemy;
+    public float startTimeBtwAttackEnemy;
+    public Transform attackPos;
+    public LayerMask whatIsEnemies;
+    public float attackRange;
+    public int damage;
+    public float knockbackForce = 5f;
+
+
+
     Rigidbody2D rb;
     void Start()
     {
@@ -67,13 +77,13 @@ public class EnemyMovement : MonoBehaviour
             isJumping = true;
             jumpCooldown = Time.time + 3;
         }
-        
-
-        
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         isJumping = false;
+
+
+        EnemyAttack();
     }
 
     public void TakeDamage(int damage)
@@ -88,5 +98,20 @@ public class EnemyMovement : MonoBehaviour
         Instantiate(bloodEffect, transform.position, Quaternion.identity);
         health -= damage;
         Debug.Log("Damage TAKEN !");
+    }
+
+    void EnemyAttack()
+    {
+        Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
+        for (int i = 0; i < enemiesToDamage.Length; i++)
+        {
+            enemiesToDamage[i].GetComponent<PlayerController>().TakeDamage(damage);
+        }
+    }
+    // gives visual of the size of the enemys attack
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
 }
