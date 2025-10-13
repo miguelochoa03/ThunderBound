@@ -88,6 +88,8 @@ public class EnemyMovement : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        // i can add lightning bolt animation or whatever casting onto slime, maybe a condition to allow it to happen
+
         // want to add knockback
 
         // will daze the enemy when hit
@@ -105,7 +107,7 @@ public class EnemyMovement : MonoBehaviour
         Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
         for (int i = 0; i < enemiesToDamage.Length; i++)
         {
-            enemiesToDamage[i].GetComponent<PlayerController>().TakeDamage(damage);
+            enemiesToDamage[i].GetComponent<PlayerController>().TakeDamage(damage, transform);
         }
     }
     // gives visual of the size of the enemys attack

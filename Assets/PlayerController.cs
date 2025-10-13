@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     float moveSpeed = 5f;
     float origMoveSpeed = 5f;
     bool isFacingLeft = false;
-    float jumpPower = 4f;
+    float jumpPower = 6f;
     bool isJumping = false;
 
     Rigidbody2D rb;
@@ -89,10 +89,6 @@ public class PlayerController : MonoBehaviour
         timeBtwAttack = startTimeBtwAttack;
 
         Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
-        //for (int i = 0; i < enemiesToDamage.Length; i++)
-        //{
-        //    enemiesToDamage[i].GetComponent<EnemyMovement>().TakeDamage(damage);
-        //}
         StartCoroutine(DelayAttackDamage(enemiesToDamage));
         StartCoroutine(ResetAttack());
     }
@@ -117,6 +113,9 @@ public class PlayerController : MonoBehaviour
     {
         crushing = true;
         timeBtwAttack = startTimeBtwAttack;
+
+        // downward force
+        rb.velocity = new Vector2(rb.velocity.x, -60f);
 
         Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(crushPos.position, crushRange, whatIsEnemies);
         StartCoroutine(DelayCrushDamage(enemiesToDamage));
@@ -187,9 +186,15 @@ public class PlayerController : MonoBehaviour
     //}
 
     // player takes damage
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Transform enemyTransform)
     {
         // want to add knockback
+        //float directionX = transform.position.x > enemyTransform.position.x ? 5f : -5f;
+        //Vector2 knockDir = new Vector2(directionX, 0.5f);
+        //Debug.Log("KnockDir" + knockDir);
+        //Debug.Log("rb.velocity" + rb.velocity);
+        ////rb.velocity = knockDir * 10f;
+        //rb.velocity = new Vector2(knockDir.x * 10f, rb.velocity.y);
 
         // play a hurt sound
 
