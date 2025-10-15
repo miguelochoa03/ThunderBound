@@ -97,9 +97,16 @@ public class EnemyMovement : MonoBehaviour
         // play a hurt sound
 
         // blood
-        Instantiate(bloodEffect, transform.position, Quaternion.identity);
+        //Instantiate(bloodEffect, transform.position, Quaternion.identity);
+        GameObject bloodEffectCopy = Instantiate(bloodEffect, transform.position, Quaternion.identity);
+        StartCoroutine(DestroyBloodAfterDelay(bloodEffectCopy));
         health -= damage;
         Debug.Log("Damage TAKEN !");
+    }
+    IEnumerator DestroyBloodAfterDelay(GameObject bloodEffectCopy)
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(bloodEffectCopy);
     }
 
     void EnemyAttack()

@@ -189,18 +189,19 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage, Transform enemyTransform)
     {
         // want to add knockback
-        //float directionX = transform.position.x > enemyTransform.position.x ? 5f : -5f;
-        //Vector2 knockDir = new Vector2(directionX, 0.5f);
-        //Debug.Log("KnockDir" + knockDir);
-        //Debug.Log("rb.velocity" + rb.velocity);
-        ////rb.velocity = knockDir * 10f;
-        //rb.velocity = new Vector2(knockDir.x * 10f, rb.velocity.y);
 
         // play a hurt sound
 
         // blood
-        Instantiate(bloodEffect, transform.position, Quaternion.identity);
+        //Instantiate(bloodEffect, transform.position, Quaternion.identity);
+        GameObject bloodEffectCopy = Instantiate(bloodEffect, transform.position, Quaternion.identity);
+        StartCoroutine(DestroyBloodAfterDelay(bloodEffectCopy));
         health -= damage;
         Debug.Log("Player Damage TAKEN !");
+    }
+    IEnumerator DestroyBloodAfterDelay(GameObject bloodEffectCopy)
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(bloodEffectCopy);
     }
 }
