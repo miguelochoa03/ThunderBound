@@ -41,7 +41,8 @@ public class PlayerController : MonoBehaviour
     // need to stop movement when attacking
     // camera follows player
 
-
+    //bool isDoingAction = attacking && crushing && walking;
+    bool isDoingAction;
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +56,12 @@ public class PlayerController : MonoBehaviour
     {
         horizontalInput = Input.GetAxis("Horizontal");
         walking = Mathf.Abs(horizontalInput) > 0f;
-        FlipSprite();
+        //isDoingAction = attacking && crushing && walking;
+        //if (isDoingAction == false)
+        //{
+        //    FlipSprite();
+        //}
+
         // press space to make the character jump
         if (Input.GetButtonDown("Jump") && !isJumping)
         {
@@ -81,6 +87,12 @@ public class PlayerController : MonoBehaviour
         if (state.Equals(currentState)) return;
         currentState = state;
         animator.CrossFade(currentState, 0f, 0);
+
+        isDoingAction = attacking && crushing && walking;
+        if (isDoingAction == false)
+        {
+            FlipSprite();
+        }
     }
     // logic for attacking and attack anim
     void Attack()
