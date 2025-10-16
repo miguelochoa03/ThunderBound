@@ -14,7 +14,7 @@ public class EnemyMovement : MonoBehaviour
     public float jumpPower;
     public bool isJumping;
 
-    public float jumpCooldown;
+    float jumpCooldown;
 
     public float health = 20f;
     public GameObject bloodEffect;
@@ -75,9 +75,10 @@ public class EnemyMovement : MonoBehaviour
 
         if (Time.time > jumpCooldown && !isJumping)
         {
+            jumpPower = Random.Range(6, 8);
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             isJumping = true;
-            jumpCooldown = Time.time + 3;
+            jumpCooldown = Time.time + Random.Range(1, 5);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -87,9 +88,6 @@ public class EnemyMovement : MonoBehaviour
 
         EnemyAttack();
     }
-
-    //Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
-    //rb.AddForce(knockbackDirection* knockbackForce, ForceMode2D.Impulse);
 
 
     public void TakeDamage(int damage, Transform playerTransform)

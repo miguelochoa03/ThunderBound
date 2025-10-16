@@ -56,11 +56,6 @@ public class PlayerController : MonoBehaviour
     {
         horizontalInput = Input.GetAxis("Horizontal");
         walking = Mathf.Abs(horizontalInput) > 0f;
-        //isDoingAction = attacking && crushing && walking;
-        //if (isDoingAction == false)
-        //{
-        //    FlipSprite();
-        //}
 
         // press space to make the character jump
         if (Input.GetButtonDown("Jump") && !isJumping)
@@ -123,6 +118,8 @@ public class PlayerController : MonoBehaviour
     // logic for different attack and its anim
     void Crush()
     {
+        // make size change multiple times to make crush attacking much better
+
         crushing = true;
         timeBtwAttack = startTimeBtwAttack;
 
