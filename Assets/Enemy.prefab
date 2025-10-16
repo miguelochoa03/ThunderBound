@@ -203,12 +203,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3930f67f140dca49844da9d56bd37c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 5023081324918327701, guid: ace24fcdd63718f4cbb2140fcd33d6da, type: 3}
+  player: {fileID: 0}
   flip: 0
   speed: 0.1
   jumpPower: 5
   isJumping: 0
-  jumpCooldown: 3
   health: 20
   bloodEffect: {fileID: 6148320294825312471, guid: be0666762f010f14d8297884fa7c0847, type: 3}
   startDazedTime: 0.6
@@ -219,4 +218,3 @@ MonoBehaviour:
     m_Bits: 128
   attackRange: 0.55
   damage: 16
-  knockbackForce: 5

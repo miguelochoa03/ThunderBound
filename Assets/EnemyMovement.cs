@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public GameObject player;
+    GameObject player;
 
     public bool flip;
 
@@ -37,6 +37,9 @@ public class EnemyMovement : MonoBehaviour
     Rigidbody2D rb;
     void Start()
     {
+        // find player in scene
+        player = GameObject.FindWithTag("Player");
+
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -59,7 +62,7 @@ public class EnemyMovement : MonoBehaviour
             dazedTime -= Time.deltaTime;
         }
 
-            Vector3 scale = transform.localScale;
+        Vector3 scale = transform.localScale;
 
         if (player.transform.position.x > transform.position.x)
         {
