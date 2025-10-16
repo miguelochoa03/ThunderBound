@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
 
         for (int i = 0; i < enemiesToDamage.Length; i++)
         {
-            enemiesToDamage[i].GetComponent<EnemyMovement>().TakeDamage(damage);
+            enemiesToDamage[i].GetComponent<EnemyMovement>().TakeDamage(damage, transform);
         }
     }
     IEnumerator ResetAttack()
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
 
         for (int i = 0; i < enemiesToDamage.Length; i++)
         {
-            enemiesToDamage[i].GetComponent<EnemyMovement>().TakeDamage(damage);
+            enemiesToDamage[i].GetComponent<EnemyMovement>().TakeDamage(damage, transform);
         }
     }
     IEnumerator ResetCrush()

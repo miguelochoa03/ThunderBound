@@ -28,7 +28,9 @@ public class EnemyMovement : MonoBehaviour
     public LayerMask whatIsEnemies;
     public float attackRange;
     public int damage;
-    public float knockbackForce = 5f;
+
+    float knockbackForceX;
+    float knockbackForceY;
 
 
 
@@ -86,11 +88,20 @@ public class EnemyMovement : MonoBehaviour
         EnemyAttack();
     }
 
-    public void TakeDamage(int damage)
+    //Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
+    //rb.AddForce(knockbackDirection* knockbackForce, ForceMode2D.Impulse);
+
+
+    public void TakeDamage(int damage, Transform playerTransform)
     {
         // i can add lightning bolt animation or whatever casting onto slime, maybe a condition to allow it to happen
 
-        // want to add knockback
+        // add knockback
+        knockbackForceX = Random.Range(4, 10);
+        knockbackForceY = Random.Range(8, 15);
+        Vector2 knockbackDirection = (transform.position - playerTransform.position).normalized;
+        rb.AddForce(knockbackDirection * knockbackForceX, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.up * knockbackForceY, ForceMode2D.Impulse);
 
         // will daze the enemy when hit
         dazedTime = startDazedTime;

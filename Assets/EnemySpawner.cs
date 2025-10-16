@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
     public GameObject Enemy;
     //GameObject bloodEffectCopy = Instantiate(bloodEffect, transform.position, Quaternion.identity);
     float cooldown = 0f;
-    float nextSpawn = 2f;
+    float nextSpawnTime;
 
 
     // Update is called once per frame
@@ -17,7 +17,8 @@ public class EnemySpawner : MonoBehaviour
         if (Time.time > cooldown)
         {
             Instantiate(Enemy, transform.position, Quaternion.identity);
-            cooldown = Time.time + nextSpawn;
+            nextSpawnTime = Random.Range(1f, 5f);
+            cooldown = Time.time + nextSpawnTime;
         }
     }
 }
