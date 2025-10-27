@@ -207,7 +207,6 @@ MonoBehaviour:
   speed: 0.1
   jumpPower: 5
   isJumping: 0
-  health: 20
   bloodEffect: {fileID: 6148320294825312471, guid: be0666762f010f14d8297884fa7c0847, type: 3}
   startDazedTime: 0.6
   startTimeBtwAttackEnemy: 1

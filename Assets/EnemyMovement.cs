@@ -16,7 +16,8 @@ public class EnemyMovement : MonoBehaviour
 
     float jumpCooldown;
 
-    public float health = 20f;
+    private float health = 50f;
+
     public GameObject bloodEffect;
 
     private float dazedTime;
@@ -32,8 +33,6 @@ public class EnemyMovement : MonoBehaviour
     float knockbackForceX;
     float knockbackForceY;
 
-
-
     Rigidbody2D rb;
     void Start()
     {
@@ -41,6 +40,7 @@ public class EnemyMovement : MonoBehaviour
         player = GameObject.FindWithTag("Player");
 
         rb = GetComponent<Rigidbody2D>();
+        //Healthbar.SetHealth(health, maxHealth);
     }
 
     // Update is called once per frame
