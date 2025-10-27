@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
 public class BackgroundController : MonoBehaviour
@@ -12,7 +13,15 @@ public class BackgroundController : MonoBehaviour
     void Start()
     {
         startPos = transform.position.x;
-        length = GetComponent<SpriteRenderer>().bounds.size.x;
+        if (TryGetComponent<SpriteRenderer>(out var spriteRenderer))
+        {
+            length = GetComponent<SpriteRenderer>().bounds.size.x;
+        }
+        else if (TryGetComponent<TilemapRenderer>(out var tilemapRenderer))
+        {
+            length = tilemapRenderer.bounds.size.x;
+        }
+        //length = GetComponent<SpriteRenderer>().bounds.size.x;
     }
 
     // Update is called once per frame

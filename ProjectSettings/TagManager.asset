@@ -13,7 +13,7 @@ TagManager:
   - UI
   - Enemy
   - Player
-  - 
+  - Ground
   - 
   - 
   - 
@@ -55,4 +55,7 @@ TagManager:
     locked: 0
   - name: 4Foreground
     uniqueID: 1582605477
+    locked: 0
+  - name: Ground
+    uniqueID: 48969379
     locked: 0
