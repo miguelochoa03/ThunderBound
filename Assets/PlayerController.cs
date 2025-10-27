@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour
         timeBtwAttack = startTimeBtwAttack;
 
         // downward force
-        rb.velocity = new Vector2(rb.velocity.x, -60f);
+        //rb.velocity = new Vector2(rb.velocity.x, -60f);
 
         Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(crushPos.position, crushRange, whatIsEnemies);
         StartCoroutine(DelayCrushDamage(enemiesToDamage));
