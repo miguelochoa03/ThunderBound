@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private bool attacking = false;
     private bool crushing = false;
 
+    public TextMeshProUGUI HPtext;
 
     float horizontalInput;
     float moveSpeed = 5f;
@@ -36,6 +39,8 @@ public class PlayerController : MonoBehaviour
     public float attackRange;
     public float crushRange;
     public int damage;
+
+    float sprintSpeed = 10f;
 
     // wamt to add cam shake and knockback to enemies
     // need to stop movement when attacking
@@ -206,6 +211,12 @@ public class PlayerController : MonoBehaviour
         GameObject bloodEffectCopy = Instantiate(bloodEffect, transform.position, Quaternion.identity);
         StartCoroutine(DestroyBloodAfterDelay(bloodEffectCopy));
         health -= damage;
+        HPtext.text = $"HP {health}";
+        if (health < 0)
+        {
+            //Destroy(gameObject);
+            SceneManager.LoadScene("Start");
+        }
         Debug.Log("Player Damage TAKEN !");
     }
     IEnumerator DestroyBloodAfterDelay(GameObject bloodEffectCopy)

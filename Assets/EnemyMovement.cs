@@ -9,7 +9,7 @@ public class EnemyMovement : MonoBehaviour
 
     public bool flip;
 
-    public float speed;
+    public float speed = 1f;
 
     public float jumpPower;
     public bool isJumping;
@@ -28,10 +28,12 @@ public class EnemyMovement : MonoBehaviour
     public Transform attackPos;
     public LayerMask whatIsEnemies;
     public float attackRange;
-    public int damage;
+    public int damage = 26;
 
     float knockbackForceX;
     float knockbackForceY;
+
+    //public Waves Waves;
 
     Rigidbody2D rb;
     void Start()
@@ -50,17 +52,10 @@ public class EnemyMovement : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
+            // subtract enemy count
+            //Waves.SubEnemyCount();
         }
 
-        // handles dazing the enemy
-        if (dazedTime <= 0)
-        {
-            speed = 0.4f;
-        } else
-        {
-            speed = 0;
-            dazedTime -= Time.deltaTime;
-        }
 
         Vector3 scale = transform.localScale;
 

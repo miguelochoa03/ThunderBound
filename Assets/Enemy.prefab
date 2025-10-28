@@ -216,3 +216,4 @@ MonoBehaviour:
     m_Bits: 128
   attackRange: 0.55
   damage: 16
+  Waves: {fileID: 1830324811085364438, guid: af8bedb1797fb0f4fb88e2c827a56126, type: 3}
