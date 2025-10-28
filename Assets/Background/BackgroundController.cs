@@ -21,7 +21,6 @@ public class BackgroundController : MonoBehaviour
         {
             length = tilemapRenderer.bounds.size.x;
         }
-        //length = GetComponent<SpriteRenderer>().bounds.size.x;
     }
 
     // Update is called once per frame

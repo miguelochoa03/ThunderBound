@@ -9,8 +9,6 @@ public class EnemyMovement : MonoBehaviour
 
     public AudioSource jumpSource;
     public AudioClip jumpClip;
-    //public AudioSource slimeSource;
-    //public AudioClip slimeClip;
 
     public bool flip;
 
@@ -38,17 +36,11 @@ public class EnemyMovement : MonoBehaviour
     float knockbackForceX;
     float knockbackForceY;
 
-    //public Waves Waves;
-
     Rigidbody2D rb;
     void Start()
     {
-        //slimeSource.PlayOneShot(slimeClip);
-        // find player in scene
         player = GameObject.FindWithTag("Player");
-
         rb = GetComponent<Rigidbody2D>();
-        //Healthbar.SetHealth(health, maxHealth);
     }
 
     // Update is called once per frame
@@ -60,9 +52,8 @@ public class EnemyMovement : MonoBehaviour
             Destroy(gameObject);
         }
 
-
+        // logic to follow the player
         Vector3 scale = transform.localScale;
-
         if (player.transform.position.x > transform.position.x)
         {
             scale.x = Mathf.Abs(scale.x) * -1 * (flip ? -1 : 1);
@@ -72,9 +63,9 @@ public class EnemyMovement : MonoBehaviour
             scale.x = Mathf.Abs(scale.x) * (flip ? -1 : 1);
             transform.Translate(speed * Time.deltaTime * -1, 0, 0);
         }
-
         transform.localScale = scale;
 
+        // make slime jump
         if (Time.time > jumpCooldown && !isJumping)
         {
             jumpSource.PlayOneShot(jumpClip);
@@ -84,15 +75,13 @@ public class EnemyMovement : MonoBehaviour
             jumpCooldown = Time.time + Random.Range(1, 5);
         }
     }
+    // when it touches anything
     private void OnCollisionEnter2D(Collision2D collision)
     {
         isJumping = false;
-
-
         EnemyAttack();
     }
-
-
+    // when slime takes damage from player
     public void TakeDamage(int damage, Transform playerTransform)
     {
         // add knockback
@@ -102,26 +91,20 @@ public class EnemyMovement : MonoBehaviour
         rb.AddForce(knockbackDirection * knockbackForceX, ForceMode2D.Impulse);
         rb.AddForce(Vector2.up * knockbackForceY, ForceMode2D.Impulse);
 
-        // will daze the enemy when hit
-        dazedTime = startDazedTime;
-        // play a hurt sound
-
         // blood
-        //Instantiate(bloodEffect, transform.position, Quaternion.identity);
         GameObject bloodEffectCopy = Instantiate(bloodEffect, transform.position, Quaternion.identity);
         StartCoroutine(DestroyBloodAfterDelay(bloodEffectCopy));
         health -= damage;
-        Debug.Log("Damage TAKEN !");
     }
+    // give blood time before disappearing
     IEnumerator DestroyBloodAfterDelay(GameObject bloodEffectCopy)
     {
         yield return new WaitForSeconds(2f);
         Destroy(bloodEffectCopy);
     }
-
+    // used to damage the player on collide
     void EnemyAttack()
     {
-        
         Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
         for (int i = 0; i < enemiesToDamage.Length; i++)
         {

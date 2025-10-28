@@ -6,47 +6,21 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public TextMeshProUGUI wavesText;
-
     public GameObject Enemy;
     public int[] enemiesPerWave = { 2, 4, 5 };
     public float startDelay = 6f;
-    public float spawnInterval = 1.3f;
-
+    public float spawnCooldown = 1.3f;
     private List<GameObject> activeEnemies = new List<GameObject>();
 
     void Start()
     {
+        // start handling the spawning in waves
         StartCoroutine(SpawnWaves());
     }
-
-    //IEnumerator SpawnWaves()
-    //{
-    //    yield return new WaitForSeconds(startDelay);
-
-    //    for (int wave = 0; wave < enemiesPerWave.Length; wave++)
-    //    {
-    //        wavesText.text = $"Wave {wave}";
-
-    //        activeEnemies.Clear();
-
-    //        for (int i = 0; i < enemiesPerWave[wave]; i++)
-    //        {
-    //            GameObject enemy = Instantiate(Enemy, transform.position, Quaternion.identity);
-    //            //enemy.GetComponent<EnemyMovement>().speed = 13;
-    //            activeEnemies.Add(enemy);
-    //            yield return new WaitForSeconds(spawnInterval);
-    //        }
-
-    //        // Wait until all enemies are destroyed
-    //        yield return new WaitUntil(() => AllEnemiesDefeated());
-
-    //        wavesText.text = $"Wave {wave}";
-    //    }
-
-    //    Debug.Log("All waves complete!");
-    //}
+    // logic to spawn enemies and wave system
     IEnumerator SpawnWaves()
     {
+        // give time before immediately spawning
         yield return new WaitForSeconds(startDelay);
 
         int wave = 1;
@@ -57,13 +31,14 @@ public class EnemySpawner : MonoBehaviour
 
             activeEnemies.Clear();
 
-            int enemiesToSpawn = Mathf.RoundToInt(2 + Mathf.Log(wave + 1) * wave); // Example scaling formula
+            int enemiesToSpawn = Mathf.RoundToInt(2 + Mathf.Log(wave + 1) * wave);
 
+            // start spawning the amount in the wave
             for (int i = 0; i < enemiesToSpawn; i++)
             {
                 GameObject enemy = Instantiate(Enemy, transform.position, Quaternion.identity);
                 activeEnemies.Add(enemy);
-                yield return new WaitForSeconds(spawnInterval);
+                yield return new WaitForSeconds(spawnCooldown);
             }
 
             yield return new WaitUntil(() => AllEnemiesDefeated());
@@ -71,11 +46,9 @@ public class EnemySpawner : MonoBehaviour
             wave++;
         }
     }
-
-
+    // checks to know when next wave can be done when numbered enemies are gone
     bool AllEnemiesDefeated()
     {
-        // Clean up null entries (destroyed enemies)
         activeEnemies.RemoveAll(e => e == null);
         return activeEnemies.Count == 0;
     }
