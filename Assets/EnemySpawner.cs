@@ -9,7 +9,7 @@ public class EnemySpawner : MonoBehaviour
 
     public GameObject Enemy;
     public int[] enemiesPerWave = { 2, 4, 5 };
-    public float startDelay = 1f;
+    public float startDelay = 6f;
     public float spawnInterval = 1.3f;
 
     private List<GameObject> activeEnemies = new List<GameObject>();

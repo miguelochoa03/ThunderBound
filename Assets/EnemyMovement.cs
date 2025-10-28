@@ -7,6 +7,11 @@ public class EnemyMovement : MonoBehaviour
 {
     GameObject player;
 
+    public AudioSource jumpSource;
+    public AudioClip jumpClip;
+    //public AudioSource slimeSource;
+    //public AudioClip slimeClip;
+
     public bool flip;
 
     public float speed = 1f;
@@ -38,6 +43,7 @@ public class EnemyMovement : MonoBehaviour
     Rigidbody2D rb;
     void Start()
     {
+        //slimeSource.PlayOneShot(slimeClip);
         // find player in scene
         player = GameObject.FindWithTag("Player");
 
@@ -52,8 +58,6 @@ public class EnemyMovement : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
-            // subtract enemy count
-            //Waves.SubEnemyCount();
         }
 
 
@@ -73,6 +77,7 @@ public class EnemyMovement : MonoBehaviour
 
         if (Time.time > jumpCooldown && !isJumping)
         {
+            jumpSource.PlayOneShot(jumpClip);
             jumpPower = Random.Range(6, 8);
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             isJumping = true;
@@ -90,11 +95,9 @@ public class EnemyMovement : MonoBehaviour
 
     public void TakeDamage(int damage, Transform playerTransform)
     {
-        // i can add lightning bolt animation or whatever casting onto slime, maybe a condition to allow it to happen
-
         // add knockback
-        knockbackForceX = Random.Range(4, 10);
-        knockbackForceY = Random.Range(8, 15);
+        knockbackForceX = Random.Range(3, 5);
+        knockbackForceY = Random.Range(2, 4);
         Vector2 knockbackDirection = (transform.position - playerTransform.position).normalized;
         rb.AddForce(knockbackDirection * knockbackForceX, ForceMode2D.Impulse);
         rb.AddForce(Vector2.up * knockbackForceY, ForceMode2D.Impulse);
@@ -118,6 +121,7 @@ public class EnemyMovement : MonoBehaviour
 
     void EnemyAttack()
     {
+        
         Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
         for (int i = 0; i < enemiesToDamage.Length; i++)
         {

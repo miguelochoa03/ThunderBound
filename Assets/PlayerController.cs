@@ -8,6 +8,16 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    public AudioSource footstepSource;
+    public AudioClip dirtStepClip;
+    public float footstepInterval = 0.4f;
+    private float footstepTimer = 0f;
+
+    public AudioSource attackSource;
+    public AudioClip attackClip;
+    public AudioSource crushSource;
+    public AudioClip crushClip;
+
 
     private string currentState = "PlayerIdleAnim";
     private bool walking = false;
@@ -40,8 +50,6 @@ public class PlayerController : MonoBehaviour
     public float crushRange;
     public int damage;
 
-    float sprintSpeed = 10f;
-
     // wamt to add cam shake and knockback to enemies
     // need to stop movement when attacking
     // camera follows player
@@ -61,6 +69,21 @@ public class PlayerController : MonoBehaviour
     {
         horizontalInput = Input.GetAxis("Horizontal");
         walking = Mathf.Abs(horizontalInput) > 0f;
+
+        if (walking && IsGrounded())
+        {
+            footstepTimer -= Time.deltaTime;
+            if (footstepTimer <= 0f)
+            {
+                footstepSource.PlayOneShot(dirtStepClip);
+                footstepTimer = footstepInterval;
+            }
+        }
+        else
+        {
+            footstepSource.Stop();
+            footstepTimer = 0f; // reset when not walking
+        }
 
         // press space to make the character jump
         if (Input.GetButtonDown("Jump") && !isJumping)
@@ -94,9 +117,15 @@ public class PlayerController : MonoBehaviour
             FlipSprite();
         }
     }
+    private bool IsGrounded()
+    {
+        return !isJumping; // or use a proper ground check if needed
+    }
+
     // logic for attacking and attack anim
     void Attack()
     {
+        attackSource.PlayOneShot(attackClip);
         attacking = true;
         timeBtwAttack = startTimeBtwAttack;
 
@@ -124,7 +153,7 @@ public class PlayerController : MonoBehaviour
     void Crush()
     {
         // make size change multiple times to make crush attacking much better
-
+        crushSource.PlayOneShot(crushClip);
         crushing = true;
         timeBtwAttack = startTimeBtwAttack;
 
