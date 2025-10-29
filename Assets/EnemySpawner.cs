@@ -12,6 +12,8 @@ public class EnemySpawner : MonoBehaviour
     public float spawnCooldown = 1.3f;
     private List<GameObject> activeEnemies = new List<GameObject>();
 
+    public int wave;
+
     void Start()
     {
         // start handling the spawning in waves
@@ -23,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
         // give time before immediately spawning
         yield return new WaitForSeconds(startDelay);
 
-        int wave = 1;
+        wave = 1;
 
         while (true)
         {
